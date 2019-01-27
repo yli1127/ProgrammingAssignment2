@@ -1,37 +1,39 @@
-## Put comments here that give an overall description of what your
-## functions do
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-i <- NULL
-  set <- function(y) {
-          x <<- y
-          i <<- NULL
+makeCacheMatrix <- function(x = matrix()) { ## set the x object as a matrix in the argument of the function
+i <- NULL ## set a second object, i, as NULL
+  set <- function(y) {  ## generates a function inside the function
+          x <<- y    ## Using the superassimgent operator we assign y to x in the parent environment
+          i <<- NULL  ## Using the superassimgent operator we assign the value NULL to i in the the parent environment
   }
-  get <- function() x
-  setinverse <- function(inverse) i <<- inverse
-  getinverse <- function() i
+  get <- function() x ## This part would get the value of the matrix x. Since we are using an anonymous function that
+                       ## has not been previously defined, R would look for x in the parent environment wher it has already 
+                       ## been defined
+  setinverse <- function(inverse) i <<- inverse ## we would set the value of the inverse and we 
+                                            ## will assign the inverse as a value of i in the parent environment. 
+  getinverse <- function() i  ## Here we would get the value of the inverse.
   list(set = set,
        get = get,
        setinverse = setinverse,
-       getinverse = getinverse)
+       getinverse = getinverse) ## Finally, this part will create a list including all four functions that we have generated
+                                 ## and also it will assign a name for each function which corresponds to the name of the 
+                                 ## function
 
 }
 
 
-## Write a short comment describing this function
+
 
 cacheSolve <- function(x, ...) {
 
-i <- x$getinverse()
-  if (!is.null(i)) {
+i <- x$getinverse() ## It will first call the getinverse() function to check if the inverse has already been generated.
+  if (!is.null(i)) { ## If so, i will not be NULL and the result will be TRUE, this part would be activated
           message("getting cached data")
           return(i)
   }
-  data <- x$get()
+  data <- x$get()  #If not,i would be NULL and the result of that statement would FALSE and this part will be activated.
+                   # and the inverse would need to be calculated. We first would get the object x using get() function
   i <- solve(data, ...)
-  x$setinverse(i)
-  i
-        ## Return a matrix that is the inverse of 'x'
+  x$setinverse(i) #Then using the setinverse() function we would calculate the inverse
+                 # and the result of i would be printed.
+  i   ## Return a matrix that is the inverse of 'x'
 }
